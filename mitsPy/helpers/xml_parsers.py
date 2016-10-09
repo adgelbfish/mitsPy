@@ -11,3 +11,6 @@ class Parsers:
                 'name_lcd': i['@GroupNameLcd']
             }
         return group_dict
+
+    def bulk_from_single(data):
+        return parse(data)['Packet']['DatabaseManager']['Mnet']['@Bulk']

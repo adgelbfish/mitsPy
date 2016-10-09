@@ -1,1 +1,1 @@
-#mitsubishi controller library
+#mitsubishi controller library for python

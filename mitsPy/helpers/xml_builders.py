@@ -64,8 +64,9 @@ class XmlGetRequest:
 
 class XmlGetMnetRequest:
     def __init__(self, group_number, list_of_attributes):
-        self.dict_of_attributes = {'@' + x:'"*"' for x in list_of_attributes}
-        self.built = XmlGetRequest({"Mnet": self.dict_of_attributes})
+        self.dict_of_attributes = {'@' + x:'*' for x in list_of_attributes}
+        self.dict_of_attributes['@Group'] = group_number
+        self.built = XmlGetRequest({"Mnet": self.dict_of_attributes}).built
 
 
 class BuiltXml:

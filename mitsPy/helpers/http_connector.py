@@ -41,7 +41,7 @@ class SendControllerCommands:
         return self.post_to_controller(BuiltXml().get_function_list)
 
     def get_mnet_bulk(self, group_number):
-        return self.post_to_controller(BuiltXml().get_mnet_bulk(group_number=group_number))
+        return Parsers.bulk_from_single(self.post_to_controller(BuiltXml().get_mnet_bulk(group_number=group_number)))
 
 
 

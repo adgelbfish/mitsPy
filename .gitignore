@@ -1,0 +1,13 @@
+
+.idea/
+bin/
+include/
+lib/
+lib64
+mitsPy/__pycache__/
+pip-selfcheck.json
+pyvenv.cfg
+share/
+tester.py
+.gitignore
+mitsPy/helpers/__pycache__/
