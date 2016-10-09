@@ -22,9 +22,9 @@ class MitsubishiGroup:
         self.group_name = group_name
         self.current_temp_c = None
 
-    def get_bulk(self):
+    def get_info(self):
         self.bulk = self.commands.get_mnet_bulk(group_number=self.number)
-        self.current_temp_c = MnetBulkParser(bulk_string= self.bulk).get_current_temp_c()
+        self.current_temp_c = str(MnetBulkParser(bulk_string= self.bulk).get_current_temp_c())
 
     def init_info(self):
-        self.get_bulk()
+        self.get_info()
