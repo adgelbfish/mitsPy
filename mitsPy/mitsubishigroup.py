@@ -12,8 +12,10 @@ class MitsubishiGroup:
         self.air_direction_options = None
         self.current_air_direction = None
         self._http_lock = False
+        print(group_number)
 
     def get_info(self):
+
         self.bulk = self.commands.get_mnet_bulk(group_number=self.number)
         self.current_temp_c = str(MnetBulkParser(bulk_string=self.bulk).get_current_temp_c())
         self.air_direction_options = MnetBulkParser(bulk_string=self.bulk).get_air_direction_options()
