@@ -16,7 +16,7 @@ class MitsubishiController:
 
     def refresh(self):
         self.group_info = self.commands.get_mnet_list()
-        if self.group_info is not None and type(self.group_info) == type({}):
+        if self.group_info is not None and type(self.group_info) == dict:
             list_of_group_numbers = sorted(self.group_info)
             for i in list_of_group_numbers:
                 self.groups.append(MitsubishiGroup(group_number=self.group_info[i]['number'],
