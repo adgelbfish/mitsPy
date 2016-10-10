@@ -62,11 +62,50 @@ class XmlGetRequest:
         dict_to_xml_subelement(database_manager_content, self.xml_base.xml_database_manager)
         self.built = self.xml_base.build_full()
 
+
+class XmlSetRequest:
+    def __init__(self, database_manager_content={}):
+        self.xml_base = XmlRequest(request_type="set")
+        dict_to_xml_subelement(database_manager_content, self.xml_base.xml_database_manager)
+        self.built = self.xml_base.build_full()
+
+
+def create_dict_of_attributes(list_of_attributes):
+    return {'@' + x: '*' for x in list_of_attributes}
+
+
+def create_dict_of_attributes_with_group(group_number, list_of_attributes):
+    dict_of_attributes = create_dict_of_attributes(list_of_attributes=list_of_attributes)
+    dict_of_attributes['@Group'] = group_number
+    return dict_of_attributes
+
+
 class XmlGetMnetRequest:
     def __init__(self, group_number, list_of_attributes):
-        self.dict_of_attributes = {'@' + x:'*' for x in list_of_attributes}
-        self.dict_of_attributes['@Group'] = group_number
+        self.dict_of_attributes = create_dict_of_attributes_with_group(group_number=group_number,
+                                                                       list_of_attributes=list_of_attributes)
         self.built = XmlGetRequest({"Mnet": self.dict_of_attributes}).built
+
+
+class XmlSetMnetRequest:
+    def __init__(self, group_number, dict_of_attributes):
+        self.corrected_dict_of_attributes = {'@' + x: dict_of_attributes[x] for x in dict_of_attributes.keys()}
+        self.corrected_dict_of_attributes['@Group'] = group_number
+        self.built = XmlSetRequest({"Mnet": self.corrected_dict_of_attributes}).built
+
+
+class XmlGetSetbackcontrolRequest:
+    def __init__(self, group_number, list_of_attributes):
+        self.dict_of_attributes = create_dict_of_attributes_with_group(group_number=group_number,
+                                                                       list_of_attributes=list_of_attributes)
+        self.built = XmlGetRequest({"SetbackControl": self.dict_of_attributes}).built
+
+
+class XmlSetSetbackcontrolRequest:
+    def __init__(self, group_number, dict_of_attributes):
+        self.corrected_dict_of_attributes = {'@' + x: dict_of_attributes[x] for x in dict_of_attributes.keys()}
+        self.corrected_dict_of_attributes['@Group'] = group_number
+        self.built = XmlSetRequest({"SetbackControl": self.corrected_dict_of_attributes}).built
 
 
 class BuiltXml:
@@ -92,3 +131,19 @@ class BuiltXml:
 
     def get_mnet_bulk(self, group_number):
         return XmlGetMnetRequest(group_number=group_number, list_of_attributes=["Bulk"]).built
+
+    def get_current_info(self, group_number):
+        return XmlGetSetbackcontrolRequest(group_number=group_number, list_of_attributes=[
+            'State',
+            'Hold',
+            'SetTempMax',
+            'SetTempMin',
+            'PreMode',
+            'PreSetTemp',
+            'PreDriveItem',
+            'PreModeItem',
+            'PreSetTempItem'
+        ]).built
+
+    def set_mnet_items(self, group_number, dict_of_items_to_set):
+        return XmlSetMnetRequest(group_number=group_number, dict_of_attributes=dict_of_items_to_set).built

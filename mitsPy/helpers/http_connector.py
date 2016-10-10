@@ -43,6 +43,18 @@ class SendControllerCommands:
     def get_mnet_bulk(self, group_number):
         return Parsers.bulk_from_single(self.post_to_controller(BuiltXml().get_mnet_bulk(group_number=group_number)))
 
+    def get_basic_group_info(self, group_number):
+        return Parsers.all_basic_info(self.post_to_controller(BuiltXml().get_current_info(group_number=group_number)),
+                                      "SetbackControl")
+
+    def set_setback_control_items(self, group_number, item_dict):
+        return Parsers.all_basic_info(self.post_to_controller(BuiltXml().set_mnet_items(group_number=group_number, dict_of_items_to_set=item_dict)),
+                                      "SetbackControl")
+
+    def set_mnet_items(self, group_number, item_dict):
+        return Parsers.all_basic_info(self.post_to_controller(BuiltXml().set_mnet_items(group_number=group_number, dict_of_items_to_set=item_dict)),
+                                      "Mnet")
+
 
 
 class ConnectionToController:
