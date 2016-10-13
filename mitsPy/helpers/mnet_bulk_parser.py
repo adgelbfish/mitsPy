@@ -26,7 +26,7 @@ class MnetBulkParser:
 
     def get_air_direction_options(self):
         if self.bulk_string[53] == '0':
-            air_direction_options = []
+            air_direction_options = None
         elif self.bulk_string[55] == '0':
             air_direction_options = ['VERTICAL', 'MID2', 'MID1', 'HORIZONTAL']
         else:
@@ -38,7 +38,15 @@ class MnetBulkParser:
         return ['SWING', 'VERTICAL', 'MID2', 'MID1', 'HORIZONTAL', 'MID0', 'AUTO'][int(self.bulk_string[15])]
 
     def get_current_drive(self):
-        return ['CHK_ON', 'CHK_OFF'][int(self.bulk_string[3])]
+        return ['OFF', 'ON'][int(self.bulk_string[3])]
 
     def get_current_mode(self):
-        return ['FAN', 'COOL', 'HEAT', 'DRY'][int(self.bulk_string[23])]
+        return ['FAN', 'COOL', 'HEAT', 'DRY'][int(self.bulk_string[5])]
+
+    def get_set_temp(self):
+        v = int(self.bulk_string[7], 16) * 10 + int(self.bulk_string[9]) - 10
+        if (int(self.bulk_string[7], 16) ==  4):
+            v -= 5
+        if (int(self.bulk_string[7], 16) >= 5):
+            v -= 10
+        return v / 5 + 63

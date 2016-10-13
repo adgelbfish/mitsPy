@@ -23,19 +23,20 @@ class MitsubishiController:
         try:
             loop = asyncio.get_event_loop()
             async def do_async():
+                def initialize_groups(loop):
+                    return None
                 if self.group_info is not None and type(self.group_info) == dict:
                     for i in list_of_group_numbers:
                         await loop.run_in_executor(None, self.groups.append,
                                                    (MitsubishiGroup(group_number=self.group_info[i]['number'],
                                                                     group_name=self.group_info[i]['name_web'],
                                                                     commands=self.commands)))
-                    for i in self.groups:
-                        i.init_info()
+                        await loop.run_in_executor(None, next((x for x in self.groups if x.group_number == i), None).init_info)
                 self.initialized = True
                 self.last_refresh = time()
+                return initialize_groups
+            loop.run_until_complete(loop.run_until_complete(do_async())(loop))
 
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(do_async())
 
         except:
 

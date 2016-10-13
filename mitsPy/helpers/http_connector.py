@@ -8,6 +8,7 @@ class SendControllerCommands:
         self.headers = headers
 
     def post_to_controller(self, post_data):
+        print('connecting... ', self.url)
         return post(self.url, data=post_data, headers=self.headers).content.decode()
 
     def get_system_data(self):
