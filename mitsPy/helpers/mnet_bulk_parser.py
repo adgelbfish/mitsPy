@@ -44,9 +44,11 @@ class MnetBulkParser:
         return ['FAN', 'COOL', 'HEAT', 'DRY'][int(self.bulk_string[5])]
 
     def get_set_temp(self):
-        v = int(self.bulk_string[7], 16) * 10 + int(self.bulk_string[9]) - 10
-        if (int(self.bulk_string[7], 16) ==  4):
+        val1 = int(self.bulk_string[7], 16)
+        val2 = int(self.bulk_string[9])
+        v = val1 * 10 + val2 - 10
+        if val1 == 4:
             v -= 5
-        if (int(self.bulk_string[7], 16) >= 5):
+        if val1 >= 5:
             v -= 10
         return v / 5 + 63
