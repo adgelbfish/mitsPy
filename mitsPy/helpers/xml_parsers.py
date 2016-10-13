@@ -22,3 +22,5 @@ class Parsers:
             return_data[i[1:]] = new_data[i]
         return return_data
 
+    def current_drive(data):
+        return parse(data)['Packet']['DatabaseManager']['Mnet']['@Drive']

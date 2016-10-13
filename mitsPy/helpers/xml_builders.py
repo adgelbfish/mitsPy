@@ -147,3 +147,6 @@ class BuiltXml:
 
     def set_mnet_items(self, group_number, dict_of_items_to_set):
         return XmlSetMnetRequest(group_number=group_number, dict_of_attributes=dict_of_items_to_set).built
+
+    def get_current_drive(self, group_number):
+        return XmlGetMnetRequest(group_number=group_number, list_of_attributes=['Drive']).built

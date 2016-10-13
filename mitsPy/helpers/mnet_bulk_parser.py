@@ -36,3 +36,9 @@ class MnetBulkParser:
 
     def get_current_air_direction(self):
         return ['SWING', 'VERTICAL', 'MID2', 'MID1', 'HORIZONTAL', 'MID0', 'AUTO'][int(self.bulk_string[15])]
+
+    def get_current_drive(self):
+        return ['CHK_ON', 'CHK_OFF'][int(self.bulk_string[3])]
+
+    def get_current_mode(self):
+        return ['FAN', 'COOL', 'HEAT', 'DRY'][int(self.bulk_string[23])]

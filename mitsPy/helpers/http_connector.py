@@ -54,6 +54,8 @@ class SendControllerCommands:
     def set_mnet_items(self, group_number, item_dict):
         return Parsers.all_basic_info(self.post_to_controller(BuiltXml().set_mnet_items(group_number=group_number, dict_of_items_to_set=item_dict)),
                                       "Mnet")
+    def get_current_drive(self, group_number):
+        return Parsers.current_drive(self.post_to_controller(BuiltXml().get_current_drive(group_number=group_number)))
 
 
 
