@@ -51,4 +51,4 @@ class MnetBulkParser:
             v -= 5
         if val1 >= 5:
             v -= 10
-        return v / 5 + 63
+        return str(v / 5 + 63)

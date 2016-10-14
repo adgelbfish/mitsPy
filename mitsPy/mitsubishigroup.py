@@ -1,5 +1,5 @@
 from mitsPy.helpers.mnet_bulk_parser import MnetBulkParser
-
+from mitsPy.helpers.temperature_utils import *
 
 class MitsubishiGroup:
     def __init__(self, group_number, group_name, commands):
@@ -8,6 +8,7 @@ class MitsubishiGroup:
         self.commands = commands
         self.group_name = group_name
         self.current_temp_c = None
+        self.current_temp_f = None
         self.basic_info = None
         self.air_direction_options = None
         self.current_air_direction = None
@@ -16,12 +17,14 @@ class MitsubishiGroup:
         self.current_operation = None
         self.operation_list = None
         self.mode_list = None
-        self.set_temp = None
+        self.set_temp_value_c = None
+        self.set_temp_value_f = None
 
     def get_info(self):
         self.bulk = self.commands.get_mnet_bulk(group_number=self.number)
-        self.set_temp = MnetBulkParser(bulk_string=self.bulk).get_set_temp()
+        self.set_temp_value_f = MnetBulkParser(bulk_string=self.bulk).get_set_temp()
         self.current_temp_c = str(MnetBulkParser(bulk_string=self.bulk).get_current_temp_c())
+        self.current_temp_f = str(CelsiusToFahrenheit(self.current_temp_c).to_tenth)
         self.air_direction_options = MnetBulkParser(bulk_string=self.bulk).get_air_direction_options()
         self.current_air_direction = MnetBulkParser(bulk_string=self.bulk).get_current_air_direction()
         self.current_drive = MnetBulkParser(bulk_string=self.bulk).get_current_drive()
@@ -55,9 +58,7 @@ class MitsubishiGroup:
         response = self.commands.set_mnet_items(group_number=self.number, item_dict={'Drive': 'ON', 'Mode': mode})
         self.current_drive = response['Drive']
         self.current_mode = response['Mode']
-        print(self.current_mode)
         self.current_operation = self.current_mode if self.current_drive != 'OFF' else self.current_drive
-        print(self.current_operation)
 
     def set_operation(self, operation):
         if operation == 'OFF':
@@ -65,4 +66,7 @@ class MitsubishiGroup:
         else:
             self.set_mode_and_drive_on(operation)
 
-
+    def set_temperature_f(self, desired_temp_string_f):
+        desired_temp_string_c = str(FahrenheitToCelsius(desired_temp_string_f).to_half_degree)
+        response = self.commands.set_mnet_items(group_number=self.number, item_dict={'SetTemp': desired_temp_string_c})
+        self.set_temp_value_c = response['SetTemp']
