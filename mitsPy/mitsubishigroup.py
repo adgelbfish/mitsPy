@@ -19,14 +19,18 @@ class MitsubishiGroup:
         self.mode_list = None
         self.set_temp_value_c = None
         self.set_temp_value_f = None
+        self.fan_speed_options = None
+        self.current_fan_speed = None
 
     def get_info(self):
         self.bulk = self.commands.get_mnet_bulk(group_number=self.number)
-        self.set_temp_value_f = MnetBulkParser(bulk_string=self.bulk).get_set_temp()
+        self.set_temp_value_f = MnetBulkParser(bulk_string=self.bulk).get_set_temp_f()
         self.current_temp_c = str(MnetBulkParser(bulk_string=self.bulk).get_current_temp_c())
         self.current_temp_f = str(CelsiusToFahrenheit(self.current_temp_c).to_tenth)
         self.air_direction_options = MnetBulkParser(bulk_string=self.bulk).get_air_direction_options()
         self.current_air_direction = MnetBulkParser(bulk_string=self.bulk).get_current_air_direction()
+        self.current_fan_speed = MnetBulkParser(bulk_string=self.bulk).get_current_fan_speed()
+        self.fan_speed_options = MnetBulkParser(bulk_string=self.bulk).get_fan_speed_options()
         self.current_drive = MnetBulkParser(bulk_string=self.bulk).get_current_drive()
         self.current_mode = MnetBulkParser(bulk_string=self.bulk).get_current_mode()
         self.mode_list = ['FAN', 'COOL', 'HEAT', 'DRY']
@@ -70,3 +74,7 @@ class MitsubishiGroup:
         desired_temp_string_c = str(FahrenheitToCelsius(desired_temp_string_f).to_half_degree)
         response = self.commands.set_mnet_items(group_number=self.number, item_dict={'SetTemp': desired_temp_string_c})
         self.set_temp_value_c = response['SetTemp']
+
+    def set_fan_speed(self, desired_fan_speed):
+        reponse = self.commands.set_mnet_items(group_number=self.number, item_dict={'FanSpeed': desired_fan_speed})
+        self.current_fan_speed = reponse['FanSpeed']

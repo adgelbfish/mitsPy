@@ -43,7 +43,7 @@ class MnetBulkParser:
     def get_current_mode(self):
         return ['FAN', 'COOL', 'HEAT', 'DRY'][int(self.bulk_string[5])]
 
-    def get_set_temp(self):
+    def get_set_temp_f(self):
         val1 = int(self.bulk_string[7], 16)
         val2 = int(self.bulk_string[9])
         v = val1 * 10 + val2 - 10
@@ -52,3 +52,17 @@ class MnetBulkParser:
         if val1 >= 5:
             v -= 10
         return str(v / 5 + 63)
+
+    def get_fan_speed_options(self):
+        val = self.bulk_string[96]
+        if val == 0:
+            return ['LOW', 'MID1', 'MID2', 'HIGH']
+        elif val == 1:
+            return ['MID1', 'MID2', 'HIGH', 'AUTO']
+        else:
+            return ['MID1', 'MID2', 'HIGH']
+
+    def get_current_fan_speed(self):
+        dict = {'0': 'LOW', '6': 'AUTO', '2': 'MID1', '1': 'MID2', '3': 'HIGH'}
+        val = self.bulk_string[17]
+        return dict[val]
