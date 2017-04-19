@@ -4,7 +4,7 @@ import asyncio
 
 
 class MitsubishiGroup:
-    def __init__(self, group_number, group_name, commands, loop = asyncio.get_event_loop()):
+    def __init__(self, group_number, group_name, commands, loop=asyncio.get_event_loop()):
         self.number = group_number
         self.bulk = None
         self.commands = commands
@@ -26,7 +26,7 @@ class MitsubishiGroup:
         self.loop = loop
 
     @asyncio.coroutine
-    def _get_info(self):
+    def _get_info(self, callback):
         self.bulk = (yield from self.commands.get_mnet_bulk(group_number=self.number))
         self.set_temp_value_f = (MnetBulkParser(bulk_string=self.bulk).get_set_temp_f())
         self.current_temp_c = str((MnetBulkParser(bulk_string=self.bulk).get_current_temp_c()))
@@ -41,9 +41,10 @@ class MitsubishiGroup:
         self.operation_list = ['FAN', 'COOL', 'HEAT', 'DRY', 'OFF']
         self.current_operation = self.current_mode if self.current_drive != 'OFF' else self.current_drive
         self.basic_info = (yield from self.commands.get_basic_group_info(group_number=self.number))
+        callback()
 
     def init_info(self):
-        future = self._get_info()
+        future = self._get_info(callback=lambda: None)
         self.loop.create_task(future)
 
     def refresh(self):
