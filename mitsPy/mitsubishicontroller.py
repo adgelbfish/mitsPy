@@ -3,8 +3,9 @@ from datetime import time
 from mitsPy.mitsubishigroup import MitsubishiGroup
 import asyncio
 
+
 class MitsubishiController:
-    def __init__(self, url, path="/servlet/MIMEReceiveServlet", loop = asyncio.get_event_loop()):
+    def __init__(self, url, path="/servlet/MIMEReceiveServlet", loop=asyncio.get_event_loop()):
         self.group_info = None
         self.model = None
         self.version = None
@@ -16,7 +17,7 @@ class MitsubishiController:
         self.loop = loop
 
     @asyncio.coroutine
-    def refresh(self):
+    def refresh(self, group_callback_fn):
         self.group_info = (yield from self.commands.get_mnet_list())
         list_of_group_numbers = sorted(self.group_info)
 
@@ -30,11 +31,12 @@ class MitsubishiController:
 
         for i in self.groups:
             i.init_info()
+        group_callback_fn(self.groups)
         self.initialized = True
         self.last_refresh = time()
 
-    def initialize(self):
-        future = self.refresh()
+    def initialize(self, group_callback_fn=lambda x: None):
+        future = self.refresh(group_callback_fn)
         self.loop.create_task(future)
         if not self.loop.is_running():
-          self.loop.run_forever()
+            self.loop.run_forever()
