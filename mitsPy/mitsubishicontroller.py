@@ -1,7 +1,7 @@
 from mitsPy.helpers.http_connector import ConnectionToController
 from datetime import time
 from mitsPy.mitsubishigroup import MitsubishiGroup
-
+import asyncio
 
 class MitsubishiController:
     def __init__(self, url, path="/servlet/MIMEReceiveServlet"):
@@ -14,8 +14,9 @@ class MitsubishiController:
         self.commands = self.connection.sendCommand
         self.groups = []
 
+    @asyncio.coroutine
     def refresh(self):
-        self.group_info = self.commands.get_mnet_list()
+        self.group_info = (yield from self.commands.get_mnet_list())
         list_of_group_numbers = sorted(self.group_info)
 
         def updater():
@@ -32,4 +33,8 @@ class MitsubishiController:
         self.last_refresh = time()
 
     def initialize(self):
-        self.refresh()
+        future = self.refresh()
+        loop = asyncio.get_event_loop()
+        loop.create_task(future)
+        if not loop.is_running():
+            loop.run_forever()
