@@ -30,7 +30,7 @@ class MitsubishiGroup:
         self.bulk = (yield from self.commands.get_mnet_bulk(group_number=self.number))
         self.set_temp_value_f = (MnetBulkParser(bulk_string=self.bulk).get_set_temp_f())
         self.current_temp_c = str((MnetBulkParser(bulk_string=self.bulk).get_current_temp_c()))
-        self.current_temp_f = str(CelsiusToFahrenheit(self.current_temp_c).to_tenth)
+        self.current_temp_f = str(CelsiusToFahrenheit(self.current_temp_c).to_degree)
         self.air_direction_options = (MnetBulkParser(bulk_string=self.bulk).get_air_direction_options())
         self.current_air_direction = (MnetBulkParser(bulk_string=self.bulk).get_current_air_direction())
         self.current_fan_speed = (MnetBulkParser(bulk_string=self.bulk).get_current_fan_speed())
