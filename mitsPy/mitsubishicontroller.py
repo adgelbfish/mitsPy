@@ -4,7 +4,7 @@ from mitsPy.mitsubishigroup import MitsubishiGroup
 import asyncio
 
 class MitsubishiController:
-    def __init__(self, url, path="/servlet/MIMEReceiveServlet"):
+    def __init__(self, url, path="/servlet/MIMEReceiveServlet", loop = asyncio.get_event_loop()):
         self.group_info = None
         self.model = None
         self.version = None
@@ -13,6 +13,7 @@ class MitsubishiController:
         self.connection = ConnectionToController(url, path)
         self.commands = self.connection.sendCommand
         self.groups = []
+        self.loop = loop
 
     @asyncio.coroutine
     def refresh(self):
@@ -34,7 +35,6 @@ class MitsubishiController:
 
     def initialize(self):
         future = self.refresh()
-        loop = asyncio.get_event_loop()
-        loop.create_task(future)
-        if not loop.is_running():
-          loop.run_forever()
+        self.loop.create_task(future)
+        if not self.loop.is_running():
+          self.loop.run_forever()

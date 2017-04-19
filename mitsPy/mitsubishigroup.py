@@ -4,7 +4,7 @@ import asyncio
 
 
 class MitsubishiGroup:
-    def __init__(self, group_number, group_name, commands):
+    def __init__(self, group_number, group_name, commands, loop = asyncio.get_event_loop()):
         self.number = group_number
         self.bulk = None
         self.commands = commands
@@ -23,6 +23,7 @@ class MitsubishiGroup:
         self.set_temp_value_f = None
         self.fan_speed_options = None
         self.current_fan_speed = None
+        self.loop = loop
 
     @asyncio.coroutine
     def _get_info(self):
@@ -43,48 +44,39 @@ class MitsubishiGroup:
 
     def init_info(self):
         future = self._get_info()
-        loop = asyncio.get_event_loop()
-        loop.create_task(future)
+        self.loop.create_task(future)
 
     def refresh(self):
         future = self._get_info()
-        loop = asyncio.get_event_loop()
-        loop.create_task(future)
+        self.loop.create_task(future)
 
     def set_air_direction(self, direction):
         future = self._set_air_direction(direction=direction)
-        loop = asyncio.get_event_loop()
-        loop.create_task(future)
+        self.loop.create_task(future)
 
     def set_drive(self, drive):
         future = self._set_drive(drive=drive)
-        loop = asyncio.get_event_loop()
-        loop.create_task(future)
+        self.loop.create_task(future)
 
     def set_mode(self, mode):
         future = self._set_mode(mode=mode)
-        loop = asyncio.get_event_loop()
-        loop.create_task(future)
+        self.loop.create_task(future)
 
     def set_mode_and_drive_on(self, mode):
         future = self._set_mode_and_drive_on(mode=mode)
-        loop = asyncio.get_event_loop()
-        loop.create_task(future)
+        self.loop.create_task(future)
 
     def set_operation(self, operation):
         future = self._set_operation(operation=operation)
-        loop = asyncio.get_event_loop()
-        loop.create_task(future)
+        self.loop.create_task(future)
 
     def set_temperature_f(self, desired_temp_string_f):
         future = self._set_temperature_f(desired_temp_string_f=desired_temp_string_f)
-        loop = asyncio.get_event_loop()
-        loop.create_task(future)
+        self.loop.create_task(future)
 
     def set_fan_speed(self, desired_fan_speed):
         future = self._set_fan_speed(desired_fan_speed=desired_fan_speed)
-        loop = asyncio.get_event_loop()
-        loop.create_task(future)
+        self.loop.create_task(future)
 
     @asyncio.coroutine
     def _set_air_direction(self, direction):
