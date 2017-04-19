@@ -37,4 +37,4 @@ class MitsubishiController:
         loop = asyncio.get_event_loop()
         loop.create_task(future)
         if not loop.is_running():
-            loop.run_forever()
+          loop.run_forever()
