@@ -43,12 +43,12 @@ class MitsubishiGroup:
         self.basic_info = (yield from self.commands.get_basic_group_info(group_number=self.number))
         callback()
 
-    def init_info(self):
-        future = self._get_info(callback=lambda: None)
+    def init_info(self, callback=lambda: None):
+        future = self._get_info(callback=callback)
         self.loop.create_task(future)
 
-    def refresh(self):
-        future = self._get_info(callback=lambda: None)
+    def refresh(self, callback=lambda: None):
+        future = self._get_info(callback=callback)
         self.loop.create_task(future)
 
     def set_air_direction(self, direction):
