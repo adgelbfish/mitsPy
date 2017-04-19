@@ -86,8 +86,8 @@ class SendControllerCommands:
 
     @asyncio.coroutine
     def set_mnet_items(self, group_number, item_dict):
-        response = (yield from self.post_to_controller())
-        BuiltXml().set_mnet_items(group_number=group_number, dict_of_items_to_set=item_dict)
+        response = (yield from self.post_to_controller(
+            BuiltXml().set_mnet_items(group_number=group_number, dict_of_items_to_set=item_dict)))
         return Parsers().all_basic_info(response,
                                         "Mnet")
 
