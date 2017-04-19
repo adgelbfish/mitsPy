@@ -1,8 +1,9 @@
 from xmltodict import parse
+import asyncio
 
 
 class Parsers:
-    def groups(data):
+    def groups(self, data):
         group_dict = {}
         for i in parse(data)['Packet']['DatabaseManager']['ControlGroup']['MnetList']['MnetRecord']:
             group_dict[i['@Group']] = {
@@ -12,15 +13,15 @@ class Parsers:
             }
         return group_dict
 
-    def bulk_from_single(data):
+    def bulk_from_single(self, data):
         return parse(data)['Packet']['DatabaseManager']['Mnet']['@Bulk']
 
-    def all_basic_info(data, domain):
+    def all_basic_info(self, data, domain):
         new_data = parse(data)['Packet']['DatabaseManager'][domain]
         return_data = {}
         for i in new_data.keys():
             return_data[i[1:]] = new_data[i]
         return return_data
 
-    def current_drive(data):
+    def current_drive(self, data):
         return parse(data)['Packet']['DatabaseManager']['Mnet']['@Drive']
