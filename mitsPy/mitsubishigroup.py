@@ -26,7 +26,7 @@ class MitsubishiGroup:
         self.loop = loop
 
     @asyncio.coroutine
-    def _get_info(self, callback):
+    def _get_info(self, callback=lambda: None):
         self.bulk = (yield from self.commands.get_mnet_bulk(group_number=self.number))
         self.set_temp_value_f = (MnetBulkParser(bulk_string=self.bulk).get_set_temp_f())
         self.current_temp_c = str((MnetBulkParser(bulk_string=self.bulk).get_current_temp_c()))
@@ -48,7 +48,7 @@ class MitsubishiGroup:
         self.loop.create_task(future)
 
     def refresh(self):
-        future = self._get_info()
+        future = self._get_info(callback=lambda: None)
         self.loop.create_task(future)
 
     def set_air_direction(self, direction):
