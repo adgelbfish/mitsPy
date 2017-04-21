@@ -23,4 +23,4 @@ config = {
 }
 
 if __name__ == '__main__':
-    setup(**config, install_requires=['xmltodict'])
+    setup(**config, install_requires=['xmltodict', 'aiohttp'])
