@@ -22,7 +22,6 @@ class SendControllerCommands:
 
     @asyncio.coroutine
     def post_to_controller(self, post_data):
-        print(post_data)
         with aiohttp.ClientSession() as session:
             return (yield from post(session, self.url, data=post_data, headers=self.headers))
 

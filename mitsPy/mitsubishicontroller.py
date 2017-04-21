@@ -17,21 +17,21 @@ class MitsubishiController:
         self.loop = loop
 
     @asyncio.coroutine
-    def refresh(self, group_callback_fn):
+    def refresh(self, group_callback_fn=lambda x: None):
+
         self.group_info = (yield from self.commands.get_mnet_list())
         list_of_group_numbers = sorted(self.group_info)
 
-        def updater():
-            for i in list_of_group_numbers:
-                self.groups.append(MitsubishiGroup(group_number=self.group_info[i]['number'],
-                                                   group_name=self.group_info[i]['name_web'],
-                                                   commands=self.commands))
-
-        updater()
+        for i in list_of_group_numbers:
+            self.groups.append(MitsubishiGroup(group_number=self.group_info[i]['number'],
+                                               group_name=self.group_info[i]['name_web'],
+                                               commands=self.commands))
 
         for i in self.groups:
             i.init_info()
+
         group_callback_fn(self.groups)
+
         self.initialized = True
         self.last_refresh = time()
 

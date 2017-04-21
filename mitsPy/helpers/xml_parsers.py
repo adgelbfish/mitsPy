@@ -1,5 +1,4 @@
 from xmltodict import parse
-import asyncio
 
 
 class Parsers:

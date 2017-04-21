@@ -17,10 +17,10 @@ config = {
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Development Status :: 1 - Planning",
+        "Development Status :: 2 - Pre-Alpha",
     ],
     'packages': find_packages(),
 }
 
 if __name__ == '__main__':
-    setup(**config)
+    setup(**config, install_requires=['xmltodict'])
