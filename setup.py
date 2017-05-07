@@ -11,10 +11,9 @@ config = {
     'long_description': open('README.rst', 'r').read(),
     'license': 'MIT',
     'version': '0.0.1',
-    'install_requires': [],
+    'install_requires': ['xmltodict', 'aiohttp'],
     'classifiers': [
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Development Status :: 1 - Planning",
