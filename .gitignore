@@ -11,3 +11,6 @@ share/
 tester.py
 .gitignore
 mitsPy/helpers/__pycache__/
+dist/
+build/
+*.egg-info/
