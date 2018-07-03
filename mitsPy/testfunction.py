@@ -6,7 +6,7 @@ from mitsPy import manager
 loop2 = asyncio.new_event_loop()
 loop = asyncio.new_event_loop()
 loop2.run_in_executor(ThreadPoolExecutor(max_workers=1), lambda x: x.run_forever(), loop)
-hvac = manager.Manager("domain.tld", loop=loop)
+hvac = manager.Manager("http://domain.tld", loop=loop)
 
 hvac.initialize()
 
