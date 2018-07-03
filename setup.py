@@ -10,8 +10,7 @@ config = {
     'description': '',
     'long_description': open('README.rst', 'r').read(),
     'license': 'MIT',
-    'version': '0.0.1',
-    'install_requires': [],
+    'version': '0.1.4',
     'classifiers': [
         "Programming Language :: Python",
         "Programming Language :: Python :: 2",

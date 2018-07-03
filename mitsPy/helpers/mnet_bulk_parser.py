@@ -51,7 +51,7 @@ class MnetBulkParser:
             v -= 5
         if val1 >= 5:
             v -= 10
-        return str(v / 5 + 63)
+        return int(v / 5 + 63)
 
     def get_fan_speed_options(self):
         val = self.bulk_string[95]

@@ -1,0 +1,17 @@
+Metadata-Version: 1.1
+Name: mitsPy
+Version: 0.1.4
+Summary: UNKNOWN
+Home-page: UNKNOWN
+Author: Avraham David Gelbfish
+Author-email: adg@adgelb.fish
+License: MIT
+Description: mitsPy
+        --------
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Development Status :: 2 - Pre-Alpha
