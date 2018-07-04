@@ -5,7 +5,7 @@ import asyncio
 
 
 class MitsubishiController:
-    def __init__(self, url, path="/servlet/MIMEReceiveServlet", loop=None):
+    def __init__(self, url, path="/servlet/MIMEReceiveServlet"):
         self.group_info = None
         self.model = None
         self.version = None
@@ -14,7 +14,6 @@ class MitsubishiController:
         self.connection = ConnectionToController(url, path)
         self.commands = self.connection.sendCommand
         self.groups = []
-        self.loop = loop
 
     async def refresh(self, group_callback_fn=lambda x: None):
 
@@ -24,7 +23,7 @@ class MitsubishiController:
         for i in list_of_group_numbers:
             self.groups.append(MitsubishiGroup(group_number=self.group_info[i]['number'],
                                                group_name=self.group_info[i]['name_web'],
-                                               commands=self.commands, loop=self.loop))
+                                               commands=self.commands))
 
         for i in self.groups:
             i.init_info()
@@ -34,8 +33,6 @@ class MitsubishiController:
         self.initialized = True
         self.last_refresh = time()
 
-    def initialize(self, group_callback_fn=lambda x: None):
-        future = self.refresh(group_callback_fn)
-        self.loop.call_soon_threadsafe(asyncio.async, future)
-        print(self.loop.is_running())
+    async def initialize(self, group_callback_fn=lambda x: None):
+        await self.refresh(group_callback_fn)
 
