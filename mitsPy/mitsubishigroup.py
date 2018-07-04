@@ -93,9 +93,9 @@ class MitsubishiGroup:
 
   async def _set_operation(self, operation):
     if operation == 'OFF':
-      self._set_drive('OFF')
+      await self._set_drive('OFF')
     else:
-      self._set_mode_and_drive_on(operation)
+      await self._set_mode_and_drive_on(operation)
 
   async def _set_temperature_f(self, desired_temp_string_f):
     desired_temp_string_c = str(FahrenheitToCelsius(desired_temp_string_f).to_half_degree)

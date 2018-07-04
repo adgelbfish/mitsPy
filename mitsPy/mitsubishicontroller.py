@@ -26,9 +26,9 @@ class MitsubishiController:
                                                commands=self.commands))
 
         for i in self.groups:
-            i.init_info()
+            await i.init_info()
 
-        group_callback_fn(self.groups)
+        await group_callback_fn(self.groups)
 
         self.initialized = True
         self.last_refresh = time()
